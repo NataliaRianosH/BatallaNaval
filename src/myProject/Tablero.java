@@ -1,6 +1,8 @@
 package myProject;
 
 import java.util.ArrayList;
+import java.util.Random;
+
 /**
  * Esta clase es usada para modelar un tablero de juego.
  * @autor Natalia Riaños Horta (2042568) rianos.natalia@correounivalle.edu.co
@@ -19,12 +21,10 @@ public class Tablero extends ArrayList <ArrayList<Integer>> {
      * muestra el mapa por consola
     * */
     public void mostrarPorConsola(){
-        System.out.println("se va a mostrar el tablero ");
         for(int i = 0; i< this.size(); i++){
             System.out.println(this.get(i));
         }
     }
-
     /**
      * limpia el tablero, pone todo en cero
      * */
@@ -38,7 +38,6 @@ public class Tablero extends ArrayList <ArrayList<Integer>> {
             this.add(nuevaFila);
         }
     }
-
     /**
      * añade un elemento en una posicion dada
      * */
@@ -59,7 +58,6 @@ public class Tablero extends ArrayList <ArrayList<Integer>> {
                 }
                 for(int i=0; i<barco.getTamaño();i++){
                     if(this.get(y).get(x+i)==2){
-                        System.out.println("hay un 2 en "+ (x+i) + " y: " + y );
                         return true; //hay un barco
                     }
                 }
@@ -83,7 +81,6 @@ public class Tablero extends ArrayList <ArrayList<Integer>> {
      */
     public void pintarBarco(Barco barcoApintar, int x, int y){
         if(!hayUnBarco(barcoApintar,x,y)){
-            System.out.println("se pintó");
             int max = this.get(1).size()-barcoApintar.getTamaño();
             int cant=barcoApintar.getTamaño();
             switch (barcoApintar.getOrientacion()){
@@ -182,4 +179,21 @@ public class Tablero extends ArrayList <ArrayList<Integer>> {
         }
     }
 
+    public void generarTableroAleatorio(ArrayList <Barco> barcos){
+        int cantBarcos=0;
+        Random random =new Random();
+        while(cantBarcos<barcos.size()){
+            int x= random.nextInt(cantFilas);
+            int y= random.nextInt(cantColumnas);
+            int o= random.nextInt(2);
+            if(!hayUnBarco(barcos.get(cantBarcos),x,y)){
+                for(int i=0; i<=o; i++){
+                    barcos.get(cantBarcos).cambiarOrientacion();
+                }
+                añadirBarco(barcos.get(cantBarcos),x,y);
+                cantBarcos++;
+            }
+        }
+        mostrarPorConsola();
+    }
 }

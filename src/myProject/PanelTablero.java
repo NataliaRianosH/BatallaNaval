@@ -11,80 +11,95 @@ import java.util.ArrayList;
  * Miguel Ángel Ospina Hernández (2040634) miguel.ospina.hernandez@correounivalle.edu.co
  * @version v.1.0.0 date: 1/03/2022
  */
-public class PanelTablero extends JPanel{
-    private ArrayList <Barco> barcos;
-    private ArrayList <ArrayList <JLabel>> mapaLabels;
+public class PanelTablero extends JPanel {
+    private ArrayList<Barco> barcos;
+    private ArrayList<ArrayList<JLabel>> mapaLabels;
     private Tablero tableroJugador;
     private JLabel labelSeleccionado;
-    private int px=0, //posicion x del Label seleccionado
-                py=0, //posición y del label seleccionado
-                barcosEnElMapa=0;// cantidad de barcos en el mapa
+    private int px = 0, //posicion x del Label seleccionado
+            py = 0, //posición y del label seleccionado
+            barcosEnElMapa = 0;// cantidad de barcos en el mapa
     private Escucha escucha;
-    private int estadoDelJuego=0; //ingresar mapa, 1, jugar
+    private int estadoDelJuego = 0; //0 añadir barcos, 1 buscar barcos
 
     /**
      * Constructor of PanelJugador class
      */
-    public PanelTablero(){
+    public PanelTablero(Tablero tableroApintar) {
         this.setPreferredSize(new Dimension(450, 450));
-        escucha=new Escucha();
-        tableroJugador=new Tablero();
-        mapaLabels=new  ArrayList <ArrayList <JLabel>>();
-        labelSeleccionado= new JLabel();
-        barcos=new ArrayList<Barco>();
-       // mapaJugador= new ArrayList <ArrayList<Integer>>();
-        //mapaJugador=tableroJugador.getTablero();
-        //crear los barcos y añadirlos al array:
-        Barco portaaviones= new Barco(4);
+        escucha = new Escucha();
+        tableroJugador = tableroApintar;
+        mapaLabels = new ArrayList<ArrayList<JLabel>>();
+        labelSeleccionado = new JLabel();
+        barcos = new ArrayList<Barco>();
+        Barco portaaviones = new Barco(4);
         barcos.add(portaaviones);
-        Barco submarino1=new Barco(3);
+        Barco submarino1 = new Barco(3);
         barcos.add(submarino1);
-        Barco submarino2=new Barco(3);
+        Barco submarino2 = new Barco(3);
         barcos.add(submarino2);
-        Barco destructor1=new Barco(2);
+        Barco destructor1 = new Barco(2);
         barcos.add(destructor1);
-        Barco destructor2=new Barco(2);
+        Barco destructor2 = new Barco(2);
         barcos.add(destructor2);
-        Barco destructor3=new Barco(2);
+        Barco destructor3 = new Barco(2);
         barcos.add(destructor3);
-        Barco fragata1=new Barco(1);
+        Barco fragata1 = new Barco(1);
         barcos.add(fragata1);
-        Barco fragata2=new Barco(1);
+        Barco fragata2 = new Barco(1);
         barcos.add(fragata2);
-        Barco fragata3=new Barco(1);
+        Barco fragata3 = new Barco(1);
         barcos.add(fragata3);
         obtenerMapa(); //crea el mapa
         pintarMapa();
     }
+
     /**
      * Pinta el mapa
      */
-    public void pintarMapa(){
-        System.out.println("Se va a pintar el mapa");
-        for(int fila=0; fila<tableroJugador.size();fila++){ //sacar las filas
-            for (int x=0; x<tableroJugador.get(fila).size();x++){ //sacar las columnas
-                JLabel label=mapaLabels.get(fila).get(x);
-                label.setOpaque(true);
-                switch (tableroJugador.get(fila).get(x)){
-                    case 0:
-                        label.setBackground(Color.WHITE);
-                        break;
-                    case 1:
-                        System.out.println("Se va a pintar pink");
-                        label.setBackground(Color.pink);
-                        break;
-                    case 2:
-                        label.setBackground(Color.orange);
-                        break;
+    public void pintarMapa() {
+        if(estadoDelJuego==0){
+            for (int fila = 0; fila < tableroJugador.size(); fila++) { //sacar las filas
+                for (int x = 0; x < tableroJugador.get(fila).size(); x++) { //sacar las columnas
+                    JLabel label = mapaLabels.get(fila).get(x);
+                    label.setOpaque(true);
+                    switch (tableroJugador.get(fila).get(x)) {
+                        case 0:
+                            label.setBackground(Color.WHITE);
+                            break;
+                        case 1:
+                            label.setBackground(Color.pink);
+                            break;
+                        case 2:
+                            label.setBackground(Color.orange);
+                            break;
+                    }
+                    label.setPreferredSize(new Dimension(40, 40));
+                    label.setFont(new Font("Serif", Font.PLAIN, 20));
+                    label.setText(Integer.toString(tableroJugador.get(fila).get(x)));
+                    this.add(label);
                 }
-                label.setPreferredSize(new Dimension(40, 40));
-                label.setFont(new Font("Serif", Font.PLAIN, 20));
-                label.setText(Integer.toString(tableroJugador.get(fila).get(x)));
-                this.add(label);
-
+            }
+        }else{
+            switch (tableroJugador.get(py).get(px)){
+                case 0:
+                    labelSeleccionado.setBackground(Color.blue);
+                    break;
+                case 2:
+                    labelSeleccionado.setBackground(Color.black);
+                    break;
             }
         }
     }
+
+    public void ocultarMapa() {
+        for( int fila = 0; fila<tableroJugador.size();fila++) { //sacar las fila
+             for (int x = 0; x < tableroJugador.get(fila).size(); x++) { //sacar las columnas
+              JLabel label = mapaLabels.get(fila).get(x);
+               label.setBackground(Color.white);
+             }
+       }
+   }
     /**
      * cambia el estado del juego
      */
@@ -151,24 +166,32 @@ public class PanelTablero extends JPanel{
             }
         }
     }
+
     private class Escucha implements MouseListener{
         @Override
         public void mouseClicked(MouseEvent mouseEvent) {
-            if(mouseEvent.getButton()==3){ //click Derecho
-                tableroJugador.borrarBarco(barcos.get(barcosEnElMapa),px,py);
-                barcos.get(barcosEnElMapa).cambiarOrientacion();
-                tableroJugador.pintarBarco(barcos.get(barcosEnElMapa),px,py);
-                pintarMapa();
-            }else{
-                tableroJugador.añadirBarco(barcos.get(barcosEnElMapa),px,py);
-                barcosEnElMapa++;
-                pintarMapa();
-                if(barcosEnElMapa>=barcos.size()) {
-                    removerEscucha();
-                    JOptionPane.showMessageDialog(null, "ya ingresaste todos los barcos");
-                    estadoDelJuego=1;
-                    tableroJugador.mostrarPorConsola();
+            if(estadoDelJuego==0){
+                if(mouseEvent.getButton()==3){ //click Derecho
+                    tableroJugador.borrarBarco(barcos.get(barcosEnElMapa),px,py);
+                    barcos.get(barcosEnElMapa).cambiarOrientacion();
+                    tableroJugador.pintarBarco(barcos.get(barcosEnElMapa),px,py);
+                    pintarMapa();
+                }else{
+                    tableroJugador.añadirBarco(barcos.get(barcosEnElMapa),px,py);
+                    barcosEnElMapa++;
+                    pintarMapa();
+                    if(barcosEnElMapa>=barcos.size()) {
+                      //  removerEscucha();
+                        JOptionPane.showMessageDialog(null, "ya ingresaste todos los barcos");
+                        ocultarMapa();
+                        //estadoDelJuego=0;
+                        estadoDelJuego=1;
+                        tableroJugador.mostrarPorConsola();
+                    }
                 }
+            }else if(estadoDelJuego==1){
+                identificarSeleccion(mouseEvent);
+                pintarMapa();
             }
         }
         @Override
@@ -181,14 +204,18 @@ public class PanelTablero extends JPanel{
         }
         @Override
         public void mouseEntered(MouseEvent mouseEvent) {
-            identificarSeleccion(mouseEvent);
-            System.out.println(px + " y " +py);
-            tableroJugador.pintarBarco(barcos.get(barcosEnElMapa),px,py);
-            pintarMapa();
+            if(estadoDelJuego==0){
+                identificarSeleccion(mouseEvent);
+                tableroJugador.pintarBarco(barcos.get(barcosEnElMapa),px,py);
+                pintarMapa();
+            }
         }
         @Override
         public void mouseExited(MouseEvent mouseEvent) {
-              tableroJugador.borrarBarco(barcos.get(barcosEnElMapa),px,py);
+            if(estadoDelJuego==0){
+                tableroJugador.borrarBarco(barcos.get(barcosEnElMapa),px,py);
+
+            }
         }
     }
 

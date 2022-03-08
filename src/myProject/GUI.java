@@ -36,7 +36,7 @@ public class GUI extends JFrame {
         headerProject = new Header("Header ...", Color.BLACK);
 
         this.add(headerProject,BorderLayout.NORTH); //Change this line if you change JFrame Container's Layout
-        PanelTablero jugador=new PanelTablero();
+        PanelTablero jugador=new PanelTablero(new Tablero());
         this.add(jugador);
     }
     /**
