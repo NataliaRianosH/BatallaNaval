@@ -25,39 +25,22 @@ public class PanelTablero extends JPanel {
     /**
      * Constructor of PanelJugador class
      */
-    public PanelTablero(Tablero tableroApintar) {
+    public PanelTablero(Tablero tableroApintar, ArrayList<Barco> barcosApintar) {
+        barcos=barcosApintar;
         this.setPreferredSize(new Dimension(450, 450));
         escucha = new Escucha();
         tableroJugador = tableroApintar;
         mapaLabels = new ArrayList<ArrayList<JLabel>>();
         labelSeleccionado = new JLabel();
-        barcos = new ArrayList<Barco>();
-        Barco portaaviones = new Barco(4);
-        barcos.add(portaaviones);
-        Barco submarino1 = new Barco(3);
-        barcos.add(submarino1);
-        Barco submarino2 = new Barco(3);
-        barcos.add(submarino2);
-        Barco destructor1 = new Barco(2);
-        barcos.add(destructor1);
-        Barco destructor2 = new Barco(2);
-        barcos.add(destructor2);
-        Barco destructor3 = new Barco(2);
-        barcos.add(destructor3);
-        Barco fragata1 = new Barco(1);
-        barcos.add(fragata1);
-        Barco fragata2 = new Barco(1);
-        barcos.add(fragata2);
-        Barco fragata3 = new Barco(1);
-        barcos.add(fragata3);
         obtenerMapa(); //crea el mapa
         pintarMapa();
+
     }
 
     /**
      * Pinta el mapa
      */
-    public void pintarMapa() {
+    public void pintarMapa(){
         if(estadoDelJuego==0){
             for (int fila = 0; fila < tableroJugador.size(); fila++) { //sacar las filas
                 for (int x = 0; x < tableroJugador.get(fila).size(); x++) { //sacar las columnas
@@ -81,6 +64,7 @@ public class PanelTablero extends JPanel {
                 }
             }
         }else{
+            //aquí se pintaran imagenes
             switch (tableroJugador.get(py).get(px)){
                 case 0:
                     labelSeleccionado.setBackground(Color.blue);
@@ -96,7 +80,7 @@ public class PanelTablero extends JPanel {
         for( int fila = 0; fila<tableroJugador.size();fila++) { //sacar las fila
              for (int x = 0; x < tableroJugador.get(fila).size(); x++) { //sacar las columnas
               JLabel label = mapaLabels.get(fila).get(x);
-               label.setBackground(Color.white);
+               label.setBackground(new Color(98,175,205));
              }
        }
    }

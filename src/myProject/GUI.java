@@ -10,6 +10,7 @@ import java.awt.*;
  */
 public class GUI extends JFrame {
     private Header headerProject;
+    private ControlGame controlGame;
     /**
      * Constructor of GUI class
      */
@@ -34,10 +35,28 @@ public class GUI extends JFrame {
         //Create Listener Object and Control Object
         //Set up JComponents
         headerProject = new Header("Header ...", Color.BLACK);
+        controlGame =new ControlGame();
+        this.getContentPane().setLayout(new GridBagLayout());
+        GridBagConstraints constraints = new GridBagConstraints();
 
-        this.add(headerProject,BorderLayout.NORTH); //Change this line if you change JFrame Container's Layout
-        PanelTablero jugador=new PanelTablero(new Tablero());
-        this.add(jugador);
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.gridwidth = 1;
+        JPanel panelJugador=new JPanel();
+        panelJugador.setBackground(Color.black);
+        panelJugador.add(controlGame.getPanelTableroJugador());
+        this.add(panelJugador, constraints);
+
+        JPanel panelOponente= new JPanel();
+        panelOponente.setBackground(Color.PINK);
+        constraints.gridx = 1;
+        constraints.gridy = 0;
+        constraints.gridwidth = 1;
+        panelOponente.add(controlGame.getPanelTableroOponente());
+        this.add(panelOponente, constraints);
+
+       // PanelTablero jugador=new PanelTablero(new Tablero());
+       // this.add(jugador);
     }
     /**
      * Main process of the Java program
