@@ -26,6 +26,7 @@ public class PanelTablero extends JPanel {
      * Constructor of PanelJugador class
      */
     public PanelTablero(Tablero tableroApintar, ArrayList<Barco> barcosApintar) {
+        //.setIcon(new ImageIcon(getClass().getResource("/imagenes/titulo.png")));
         barcos=barcosApintar;
         this.setPreferredSize(new Dimension(450, 450));
         escucha = new Escucha();
@@ -49,6 +50,8 @@ public class PanelTablero extends JPanel {
                     switch (tableroJugador.get(fila).get(x)) {
                         case 0:
                             label.setBackground(Color.WHITE);
+                            //  label.setText("");
+                            ;
                             break;
                         case 1:
                             label.setBackground(Color.pink);
@@ -68,9 +71,13 @@ public class PanelTablero extends JPanel {
             switch (tableroJugador.get(py).get(px)){
                 case 0:
                     labelSeleccionado.setBackground(Color.blue);
+                    labelSeleccionado.setText("");
+                    labelSeleccionado.setIcon(new ImageIcon(getClass().getResource("/imagenes/fuego.png")));
                     break;
                 case 2:
                     labelSeleccionado.setBackground(Color.black);
+                    labelSeleccionado.setText("");
+                    labelSeleccionado.setIcon(new ImageIcon(getClass().getResource("/imagenes/bomba.png")));
                     break;
             }
         }
