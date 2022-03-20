@@ -2,6 +2,8 @@ package myProject;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * This class is used for ...
@@ -11,6 +13,8 @@ import java.awt.*;
 public class GUI extends JFrame {
     private Header headerProject;
     private ControlGame controlGame;
+    private Escucha escucha;
+    private JButton empezar;
     /**
      * Constructor of GUI class
      */
@@ -55,6 +59,10 @@ public class GUI extends JFrame {
         panelOponente.add(controlGame.getPanelTableroOponente());
         this.add(panelOponente, constraints);
 
+        empezar=new JButton("Empezar");
+        empezar.addActionListener(escucha);
+       // this.add(empezar);
+
        // PanelTablero jugador=new PanelTablero(new Tablero());
        // this.add(jugador);
     }
@@ -73,8 +81,12 @@ public class GUI extends JFrame {
     /**
      * inner class that extends an Adapter Class or implements Listeners used by GUI class
      */
-    private class Escucha {
+    private class Escucha implements ActionListener {
 
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+
+        }
     }
 
 }

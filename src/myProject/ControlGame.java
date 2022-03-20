@@ -8,11 +8,13 @@ public class ControlGame {
     private Tablero tableroJugador, tableroOponente;
     private ArrayList<Barco> barcosJugador, barcosOponentes;
     private int estadoJugador, estadoOponente;
+    private String estadoJuego;
     /**
      * Constructor of ControlGame class
      */
     public ControlGame(){
         //crear y añadir barcos
+        estadoJuego="añadiendo";
         barcosJugador = new ArrayList<Barco>();
         Barco portaavionJugador = new Barco(4);
         barcosJugador.add(portaavionJugador);
@@ -32,8 +34,6 @@ public class ControlGame {
         barcosJugador.add(fragata2ugador);
         Barco fragata3ugador = new Barco(1);
         barcosJugador.add(fragata3ugador);
-
-
 
         barcosOponentes = new ArrayList<Barco>();
         Barco portaaviones = new Barco(4);
@@ -56,15 +56,20 @@ public class ControlGame {
         barcosOponentes.add(fragata3);
 
         tableroJugador=new Tablero();
-        panelTableroJugador=new PanelTablero(tableroJugador,barcosJugador);
-        panelTableroJugador.pintarMapa();
+        añadirBarcos();
 
         tableroOponente=new Tablero();
+        tableroAleatorio();
+    }
+    public void añadirBarcos(){
+        panelTableroJugador=new PanelTablero(tableroJugador,barcosJugador);
+        panelTableroJugador.pintarMapa();
+    }
+    public void tableroAleatorio(){
         tableroOponente.generarTableroAleatorio(barcosOponentes);
         panelTableroOponente= new PanelTablero(tableroOponente,barcosOponentes);
         panelTableroOponente.cambiarEstado(1);
         panelTableroOponente.ocultarMapa();
-
     }
 
     public PanelTablero getPanelTableroJugador() {

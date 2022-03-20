@@ -21,6 +21,7 @@ public class PanelTablero extends JPanel {
             barcosEnElMapa = 0;// cantidad de barcos en el mapa
     private Escucha escucha;
     private int estadoDelJuego = 0; //0 añadir barcos, 1 buscar barcos
+    private Barco barcoSeleccionado;
 
     /**
      * Constructor of PanelJugador class
@@ -35,7 +36,6 @@ public class PanelTablero extends JPanel {
         labelSeleccionado = new JLabel();
         obtenerMapa(); //crea el mapa
         pintarMapa();
-
     }
 
     /**
@@ -69,18 +69,50 @@ public class PanelTablero extends JPanel {
         }else{
             //aquí se pintaran imagenes
             switch (tableroJugador.get(py).get(px)){
-                case 0:
+                case 0: //no hay nada
                     labelSeleccionado.setBackground(Color.blue);
                     labelSeleccionado.setText("");
                     labelSeleccionado.setIcon(new ImageIcon(getClass().getResource("/imagenes/fuego.png")));
                     break;
+
                 case 2:
                     labelSeleccionado.setBackground(Color.black);
                     labelSeleccionado.setText("");
-                    labelSeleccionado.setIcon(new ImageIcon(getClass().getResource("/imagenes/bomba.png")));
+                    identificarBarco();
+
+                    int posicionAcambiar=0; //identificar la posicion a cambiar
+                    System.out.println("px "+ px+ " py "+ py + ". El barco es: "+barcos.indexOf(barcoSeleccionado)  + barcoSeleccionado +" orientacion "+ barcoSeleccionado.getOrientacion()+ " con las posicions:  posiciones x="+  barcoSeleccionado.getPosicionesX()+" posiciones y="+  barcoSeleccionado.getPosicionesY());
+                        switch (barcoSeleccionado.getOrientacion()){
+                            case 0: //horizontal
+                                posicionAcambiar=barcoSeleccionado.getPosicionesX().indexOf(px);
+                                break;
+                            case 1: //vertical
+                                posicionAcambiar=barcoSeleccionado.getPosicionesY().indexOf(py);
+                                break;
+                        }
+                    System.out.println("SE VA A CAMBIAR "+ posicionAcambiar);
+
+                        barcoSeleccionado.set(posicionAcambiar, 3);
+                    tableroJugador.add(3, px, py);
+                    System.out.println(barcoSeleccionado);
+                    if(barcoSeleccionado.barcoEncontrado()){
+                        System.out.println("Se van a pintar fuegos porque se encontró todo un barco");
+                        for(int i=0; i<barcoSeleccionado.size();i++){
+                            mapaLabels.get(barcoSeleccionado.getPosicionesY().get(i)).get(barcoSeleccionado.getPosicionesX().get(i)).setIcon(new ImageIcon(getClass().getResource("/imagenes/fuego.png")));
+                        }
+                    }else {
+                        labelSeleccionado.setIcon(new ImageIcon(getClass().getResource("/imagenes/bomba.png")));
+                    }
+
                     break;
             }
         }
+    }
+    public int identificarPosicionAcambiar(){
+        int posicionAcambiar=0;
+
+
+        return posicionAcambiar;
     }
 
     public void ocultarMapa() {
@@ -158,6 +190,25 @@ public class PanelTablero extends JPanel {
         }
     }
 
+    private void identificarBarco(){
+      //  System.out.println("Se va aidentificar barco en "+ px + py);
+
+        for(int i=0;i<barcos.size();i++){
+            System.out.println("x "+barcos.get(i).getPosicionesX());
+            System.out.println("y "+barcos.get(i).getPosicionesY());
+            //   System.out.println(barcos.get(i).getPosicionesX().indexOf(px) + " " +barcos.get(i).getPosicionesX().indexOf(py));
+            if(barcos.get(i).getPosicionesX().indexOf(px)!=-1){ //está el x, ahora buscar el y
+                if(barcos.get(i).getPosicionesY().indexOf(py)!=-1){
+                    barcoSeleccionado=barcos.get(i);
+                 //   System.out.println( "El barco es "+ i + barcos.get(i)+ " size "+barcos.get(i).size()+" Horientacion "+ barcoSeleccionado.getOrientacion());
+                    break;
+                }
+
+            }
+        }
+    }
+
+
     private class Escucha implements MouseListener{
         @Override
         public void mouseClicked(MouseEvent mouseEvent) {
@@ -180,6 +231,7 @@ public class PanelTablero extends JPanel {
                         tableroJugador.mostrarPorConsola();
                     }
                 }
+
             }else if(estadoDelJuego==1){
                 identificarSeleccion(mouseEvent);
                 pintarMapa();
