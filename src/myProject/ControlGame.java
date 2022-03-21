@@ -54,10 +54,8 @@ public class ControlGame {
         barcosOponentes.add(fragata2);
         Barco fragata3 = new Barco(1);
         barcosOponentes.add(fragata3);
-
         tableroJugador=new Tablero();
         añadirBarcos();
-
         tableroOponente=new Tablero();
         tableroAleatorio();
     }
@@ -79,4 +77,5 @@ public class ControlGame {
     public PanelTablero getPanelTableroOponente() {
         return panelTableroOponente;
     }
+
 }

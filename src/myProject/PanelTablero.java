@@ -202,6 +202,9 @@ public class PanelTablero extends JPanel {
         }
     }
 
+    public int getEstadoDelJuego() {
+        return estadoDelJuego;
+    }
 
     private class Escucha implements MouseListener{
         @Override
