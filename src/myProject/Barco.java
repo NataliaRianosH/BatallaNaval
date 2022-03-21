@@ -57,14 +57,12 @@ public class Barco extends ArrayList <Integer> {
         // posicionesY.add(y);
         //hay que hacer un ajuste:
         int max = 10 -tamaño;
-        if(x>=max){
-            x=max;
-        }
-        if(y>=max){
-            y=max;
-        }
+
         switch (orientacion){
             case 0: //horizontal
+                if(x>=max){
+                    x=max;
+                }
                 for(int i=0; i<tamaño;i++) {
                     posicionesX.add(x);
                     posicionesY.add(y);
@@ -72,6 +70,10 @@ public class Barco extends ArrayList <Integer> {
                 }
                 break;
             case 1:
+
+                if(y>=max){
+                    y=max;
+                }
                 for(int i=0;i<tamaño;i++) {
                     posicionesX.add(x);
                     posicionesY.add(y);

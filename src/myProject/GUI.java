@@ -13,9 +13,12 @@ import java.awt.event.ActionListener;
 public class GUI extends JFrame {
     private Header headerProject;
     private ControlGame controlGame;
+    private PanelTablero tablero; //donde juega el oponente
+    private PanelTableroJuego tableroJugar; //donde juego yo
     private Escucha escucha;
-    private JButton instrucciones, continuar, verTableroOponente;
-    JPanel panelOponente, panelJugador;
+    private JButton instrucciones, continuar, verRespuestas;
+    JPanel panelTablero, panelJugar,panelBotones;
+
     /**
      * Constructor of GUI class
      */
@@ -45,58 +48,57 @@ public class GUI extends JFrame {
         this.getContentPane().setLayout(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
 
+        //panel tablero es donde juega el oponente
+        panelTablero= new JPanel();
+        panelTablero.setBackground(Color.PINK);
         constraints.gridx = 0;
         constraints.gridy = 0;
         constraints.gridwidth = 1;
-        panelJugador=new JPanel();
-        panelJugador.setBackground(Color.black);
-        panelJugador.add(controlGame.getPanelTableroJugador());
-        this.add(panelJugador, constraints);
+        // tableroJugar=new PanelTableroJuego();
+        tableroJugar=controlGame.getPanelTableroJugador();
+        panelTablero.add(tableroJugar);
+        panelTablero.setVisible(false);
+        this.add(panelTablero, constraints);
 
-
-        instrucciones=new JButton("intrucciones");
-        instrucciones.addActionListener(escucha);
-        constraints.gridx = 0;
-        constraints.gridy = 2;
-        this.add(instrucciones,constraints);
-
-        continuar=new JButton("continuar");
-        continuar.addActionListener(escucha);
-        constraints.gridx = 0;
-        constraints.gridy = 1;
-        this.add(continuar,constraints);
-
-        panelOponente= new JPanel();
-        panelOponente.setBackground(Color.PINK);
+        //panel jugar es dnode juego yo
+        panelJugar=new JPanel();
+        panelJugar.setBackground(Color.black);
+        //  tablero=new PanelTablero();
+        tablero=controlGame.getPanelTablero();
+        panelJugar.add(tablero);
+        panelJugar.setVisible(true);
         constraints.gridx = 1;
         constraints.gridy = 0;
         constraints.gridwidth = 1;
-        panelOponente.add(controlGame.getPanelTableroOponente());
-        panelOponente.setVisible(false);
-        this.add(panelOponente);
+        this.add(panelJugar, constraints);
 
-        verTableroOponente=new JButton("ver tablero");
-        constraints.gridx =0 ;
-        constraints.gridy = 3;
-        verTableroOponente.setVisible(true);
-        verTableroOponente.addActionListener(escucha);
+        panelBotones=new JPanel();
+        panelBotones.setBackground(Color.white);
+        constraints.gridx = 0;
+        constraints.gridy = 2;
+        constraints.gridwidth = 2;
+        this.add(panelBotones, constraints);
 
-        this.add(verTableroOponente,constraints);
+        instrucciones=new JButton("intrucciones");
+        instrucciones.addActionListener(escucha);
+        panelBotones.add(instrucciones);
 
-    }
-    public void addPanel(){
-        panelOponente.setVisible(true);
-        panelJugador.setVisible(false);
-        continuar.setVisible(false);
-        verTableroOponente.setVisible(true);
-        this.pack();
+        continuar=new JButton("continuar");
+        continuar.addActionListener(escucha);
+        panelBotones.add(continuar);
 
+
+        verRespuestas=new JButton("ver respuestas");
+        verRespuestas.setVisible(false);
+        verRespuestas.addActionListener(escucha);
+        panelBotones.add(verRespuestas);
     }
     public void visualizarPaneles(){
-        panelJugador.setVisible(true);
-        panelOponente.setVisible(true);
+        panelJugar.setVisible(true);
+        panelTablero.setVisible(true);
+        continuar.setVisible(false);
+        verRespuestas.setVisible(true);
         this.pack();
-
     }
 
     /**
@@ -122,16 +124,26 @@ public class GUI extends JFrame {
                 JOptionPane.showMessageDialog(null,"", "instrucciones",-1,new ImageIcon(getClass().getResource("/imagenes/instrucciones.png")));
             }
             if(e.getSource()==continuar){
-                if(controlGame.getPanelTableroJugador().getEstadoDelJuego()==0){
+                System.out.println("EL ESTADO ES: "+ tablero.getEstadoDelJuego());
+                if(tablero.getEstadoDelJuego()==0){
                     JOptionPane.showMessageDialog(null,"debes insertar todos los barcos para continuar");
-                }else{
-                    addPanel();
+                }else if(tablero.getEstadoDelJuego()==10){
+                    visualizarPaneles();
+                    tablero.cambiarEstado(1);
+                    //   tableroJugador.addEscucha();
                 }
-
             }
-            if(e.getSource()==verTableroOponente){
-                visualizarPaneles();
+            if(e.getSource()==verRespuestas){
+                if(verRespuestas.getText()=="ver respuestas"){
+                    tableroJugar.verRespuestaS();
+                    tablero.verRespuestaS();
+                    verRespuestas.setText("ocultar respuestas");
+                }else{
+                    verRespuestas.setText("ver respuestas");
+                    tableroJugar.ocultarRespuestaS();
+                    tablero.ocultarRespuestaS();
 
+                }
             }
 
         }

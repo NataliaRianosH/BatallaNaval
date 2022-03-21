@@ -5,6 +5,8 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Random;
+
 /**
  * Esta clase es usada para hacer visible un tablero
  * @autor Natalia Riaños Horta (2042568) rianos.natalia@correounivalle.edu.co
@@ -22,25 +24,56 @@ public class PanelTablero extends JPanel {
     private Escucha escucha;
     private int estadoDelJuego = 0; //0 añadir barcos, 1 buscar barcos
     private Barco barcoSeleccionado;
+    private PanelTableroJuego oponente;
+    // private ControlGame controlGame;
 
     /**
      * Constructor of PanelJugador class
      */
-    public PanelTablero(Tablero tableroApintar, ArrayList<Barco> barcosApintar) {
+    public PanelTablero() {
         //.setIcon(new ImageIcon(getClass().getResource("/imagenes/titulo.png")));
-        barcos=barcosApintar;
+        //  controlGame= new ControlGame();
+        barcos = new ArrayList<Barco>();
+        Barco portaavionJugador = new Barco(4);
+        barcos.add(portaavionJugador);
+        Barco submarino1Jugador = new Barco(3);
+        barcos.add(submarino1Jugador);
+        Barco submarino2ugador = new Barco(3);
+        barcos.add(submarino2ugador);
+        Barco destructor1ugador = new Barco(2);
+        barcos.add(destructor1ugador);
+        Barco destructor2ugador = new Barco(2);
+        barcos.add(destructor2ugador);
+        Barco destructor3ugador = new Barco(2);
+        barcos.add(destructor3ugador);
+        Barco fragata1ugador = new Barco(1);
+        barcos.add(fragata1ugador);
+        Barco fragata2ugador = new Barco(1);
+        barcos.add(fragata2ugador);
+        Barco fragata3ugador = new Barco(1);
+        barcos.add(fragata3ugador);
+
+        //  oponente= new PanelTablero(controlDeJuego);
         this.setPreferredSize(new Dimension(450, 450));
         escucha = new Escucha();
-        tableroJugador = tableroApintar;
+        tableroJugador= new Tablero();
         mapaLabels = new ArrayList<ArrayList<JLabel>>();
         labelSeleccionado = new JLabel();
         obtenerMapa(); //crea el mapa
         pintarMapa();
     }
 
+    public void jugadaOponente(){
+        //seleccionar un label Al azar
+        Random aleatorio = new Random();
+        //  cara= aleatorio.nextInt(6)+1;
+
+    }
+
     /**
-     * Pinta el mapa
+     * Pinta el mapa, segun el estado del juego
      */
+
     public void pintarMapa(){
         if(estadoDelJuego==0){
             for (int fila = 0; fila < tableroJugador.size(); fila++) { //sacar las filas
@@ -62,7 +95,7 @@ public class PanelTablero extends JPanel {
                     }
                     label.setPreferredSize(new Dimension(40, 40));
                     label.setFont(new Font("Serif", Font.PLAIN, 20));
-                    label.setText(Integer.toString(tableroJugador.get(fila).get(x)));
+                    //  label.setText(Integer.toString(tableroJugador.get(fila).get(x)));
                     this.add(label);
                 }
             }
@@ -82,17 +115,17 @@ public class PanelTablero extends JPanel {
 
                     int posicionAcambiar=0; //identificar la posicion a cambiar
                     System.out.println("px "+ px+ " py "+ py + ". El barco es: "+barcos.indexOf(barcoSeleccionado)  + barcoSeleccionado +" orientacion "+ barcoSeleccionado.getOrientacion()+ " con las posicions:  posiciones x="+  barcoSeleccionado.getPosicionesX()+" posiciones y="+  barcoSeleccionado.getPosicionesY());
-                        switch (barcoSeleccionado.getOrientacion()){
-                            case 0: //horizontal
-                                posicionAcambiar=barcoSeleccionado.getPosicionesX().indexOf(px);
-                                break;
-                            case 1: //vertical
-                                posicionAcambiar=barcoSeleccionado.getPosicionesY().indexOf(py);
-                                break;
-                        }
+                    switch (barcoSeleccionado.getOrientacion()){
+                        case 0: //horizontal
+                            posicionAcambiar=barcoSeleccionado.getPosicionesX().indexOf(px);
+                            break;
+                        case 1: //vertical
+                            posicionAcambiar=barcoSeleccionado.getPosicionesY().indexOf(py);
+                            break;
+                    }
                     System.out.println("SE VA A CAMBIAR "+ posicionAcambiar);
 
-                        barcoSeleccionado.set(posicionAcambiar, 3);
+                    barcoSeleccionado.set(posicionAcambiar, 3);
                     tableroJugador.add(3, px, py);
                     System.out.println(barcoSeleccionado);
                     if(barcoSeleccionado.barcoEncontrado()){
@@ -111,17 +144,17 @@ public class PanelTablero extends JPanel {
 
     public void ocultarMapa() {
         for( int fila = 0; fila<tableroJugador.size();fila++) { //sacar las fila
-             for (int x = 0; x < tableroJugador.get(fila).size(); x++) { //sacar las columnas
-              JLabel label = mapaLabels.get(fila).get(x);
-               label.setBackground(new Color(98,175,205));
-             }
-       }
-   }
+            for (int x = 0; x < tableroJugador.get(fila).size(); x++) { //sacar las columnas
+                JLabel label = mapaLabels.get(fila).get(x);
+                label.setBackground(new Color(98,175,205));
+            }
+        }
+    }
     /**
      * cambia el estado del juego
      */
     public void cambiarEstado(int nuevoEstado){
-     estadoDelJuego=nuevoEstado;
+        estadoDelJuego=nuevoEstado;
     }
 
     /**
@@ -130,12 +163,12 @@ public class PanelTablero extends JPanel {
 
     public void obtenerMapa(){
         this.removeAll();
-         mapaLabels.clear();
+        mapaLabels.clear();
         for(int fila=0; fila<tableroJugador.size();fila++){
             ArrayList <JLabel> nuevaFila= new ArrayList <JLabel>();
             for (int x=0; x<tableroJugador.get(fila).size();x++){
                 JLabel nuevoLabel=new JLabel();
-                nuevoLabel.setText(Integer.toString(tableroJugador.get(fila).get(x)));
+                //E   nuevoLabel.setText(Integer.toString(tableroJugador.get(fila).get(x)));
                 nuevoLabel.addMouseListener(escucha);
                 nuevaFila.add(nuevoLabel);
             }
@@ -143,10 +176,14 @@ public class PanelTablero extends JPanel {
         }
     }
 
+    public void setOponente(PanelTableroJuego oponente) {
+        this.oponente = oponente;
+    }
+
     /**
      * nos dice si un objeto se encuentra en un array. se utiliza para identificar cual es el laber seleccionado
      */
-    private boolean seEncuentra(Object label, ArrayList<JLabel> buscarAquí){
+    boolean seEncuentra(Object label, ArrayList<JLabel> buscarAquí){
         if(buscarAquí.indexOf(label)==-1){
             return false;
         }else {
@@ -156,7 +193,7 @@ public class PanelTablero extends JPanel {
     /**
      * identifica cual el Label que se seleccionó
      */
-    private JLabel identificarSeleccion (MouseEvent e){
+    public JLabel identificarSeleccion (MouseEvent e){
         JLabel seleccionado=new JLabel("");
         int x=0, y=0;
         while(seleccionado!=e.getSource() && y <mapaLabels.size()){ //segun la cant de filas
@@ -171,12 +208,11 @@ public class PanelTablero extends JPanel {
         labelSeleccionado=mapaLabels.get(py).get(px);
         return labelSeleccionado;
     }
-
     /**
      * remueve la escucha de todos los labels
      */
 
-    private void removerEscucha(){
+    public void removerEscucha(){
         for(int fila=0; fila<mapaLabels.size();fila++){
             for (int x=0; x<mapaLabels.get(fila).size();x++){
                 mapaLabels.get(fila).get(x).removeMouseListener(escucha);
@@ -184,8 +220,19 @@ public class PanelTablero extends JPanel {
         }
     }
 
-    private void identificarBarco(){
-      //  System.out.println("Se va aidentificar barco en "+ px + py);
+    /**
+     * añade la escucha de todos los labels
+     */
+
+    public void addEscucha(){
+        for(int fila=0; fila<mapaLabels.size();fila++){
+            for (int x=0; x<mapaLabels.get(fila).size();x++){
+                mapaLabels.get(fila).get(x).addMouseListener(escucha);
+            }
+        }
+    }
+    public void identificarBarco(){
+        //  System.out.println("Se va aidentificar barco en "+ px + py);
 
         for(int i=0;i<barcos.size();i++){
             System.out.println("x "+barcos.get(i).getPosicionesX());
@@ -194,12 +241,49 @@ public class PanelTablero extends JPanel {
             if(barcos.get(i).getPosicionesX().indexOf(px)!=-1){ //está el x, ahora buscar el y
                 if(barcos.get(i).getPosicionesY().indexOf(py)!=-1){
                     barcoSeleccionado=barcos.get(i);
-                 //   System.out.println( "El barco es "+ i + barcos.get(i)+ " size "+barcos.get(i).size()+" Horientacion "+ barcoSeleccionado.getOrientacion());
+                    //   System.out.println( "El barco es "+ i + barcos.get(i)+ " size "+barcos.get(i).size()+" Horientacion "+ barcoSeleccionado.getOrientacion());
                     break;
                 }
 
             }
         }
+    }
+
+    public void verRespuestaS(){
+        for (int fila = 0; fila < tableroJugador.size(); fila++) { //sacar las filas
+            for (int x = 0; x < tableroJugador.get(fila).size(); x++) { //sacar las columnas
+                JLabel label = mapaLabels.get(fila).get(x);
+                label.setOpaque(true);
+                label.setPreferredSize(new Dimension(40, 40));
+                label.setFont(new Font("Serif", Font.PLAIN, 20));
+                label.setText(Integer.toString(tableroJugador.get(fila).get(x)));
+                this.add(label);
+            }
+        }
+    }
+    public void ocultarRespuestaS(){
+        for (int fila = 0; fila < tableroJugador.size(); fila++) { //sacar las filas
+            for (int x = 0; x < tableroJugador.get(fila).size(); x++) { //sacar las columnas
+                JLabel label = mapaLabels.get(fila).get(x);
+                label.setOpaque(true);
+                label.setPreferredSize(new Dimension(40, 40));
+                label.setFont(new Font("Serif", Font.PLAIN, 20));
+                label.setText("");
+                this.add(label);
+            }
+        }
+    }
+
+    public ArrayList<Barco> getBarcos() {
+        return barcos;
+    }
+
+    public Barco getBarcoSeleccionado() {
+        return barcoSeleccionado;
+    }
+
+    public void JugadaOponente(){
+
     }
 
     public int getEstadoDelJuego() {
@@ -220,19 +304,21 @@ public class PanelTablero extends JPanel {
                     barcosEnElMapa++;
                     pintarMapa();
                     if(barcosEnElMapa>=barcos.size()) {
-                      //  removerEscucha();
-                        JOptionPane.showMessageDialog(null, "ya ingresaste todos los barcos");
+                        //  removerEscucha();
                         ocultarMapa();
                         //estadoDelJuego=0;
-                        estadoDelJuego=1;
                         tableroJugador.mostrarPorConsola();
+                        JOptionPane.showMessageDialog(null, "ya ingresaste todos los barcos");
+                        estadoDelJuego=10;
+//                        System.out.println("EL ESTADO ESs: "+getEstadoDelJuego());
+
                     }
                 }
-
-            }else if(estadoDelJuego==1){
+            }/*else if(estadoDelJuego==1){
+             //   addEscucha();
                 identificarSeleccion(mouseEvent);
                 pintarMapa();
-            }
+            }*/
         }
         @Override
         public void mousePressed(MouseEvent mouseEvent) {
@@ -258,7 +344,5 @@ public class PanelTablero extends JPanel {
             }
         }
     }
-
-
 
 }
