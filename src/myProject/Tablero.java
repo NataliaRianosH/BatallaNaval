@@ -153,34 +153,6 @@ public class Tablero extends ArrayList <ArrayList<Integer>> {
             for (int i = 0; i < barcoApintar.size(); i++) {
                 this.add(barcoApintar.get(i),(barcoApintar.getPosicionesX().get(i)),(barcoApintar.getPosicionesY().get(i)));
             }
-
-           /*
-            int max = this.get(1).size() - barcoApintar.getTamaño();
-            int cant = barcoApintar.getTamaño();
-
-            switch (barcoApintar.getOrientacion()) { //0 horizontal, 1 vertical
-                case 0:
-                    if (x >= max) {
-                        for (int i = max; i <= 9; i++) {
-                            this.add(2, i, y);
-                        }
-                    } else {
-                        for (int i = 0; i < cant; i++) {
-                            this.add(2, x + i, y);
-                        }
-                    }
-                    break;
-                case 1:
-                    if (y >= max) {
-                        for (int i = max; i <= 9; i++) {
-                            this.add(2, x, i);
-                        }
-                    } else {
-                        for (int i = 0; i < cant; i++) {
-                            this.add(2, x, y + i);
-                        }
-                    }
-            }*/
         } else {
           //  System.out.println("NO SE PUEDE AÑADIR PORQUE HAY UN 2 ");
         }

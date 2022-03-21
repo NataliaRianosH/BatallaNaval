@@ -12,8 +12,6 @@ import java.util.ArrayList;
 public class Barco extends ArrayList <Integer> {
     private int tamaño; //de 1 a 4
     private int orientacion; //0 horizontal, 1vertical
-    private JLabel labels;
-    private int px, py;
     private ArrayList<Integer> posicionesX, posicionesY;
     /**
      * Constructor of Barco class
@@ -21,8 +19,6 @@ public class Barco extends ArrayList <Integer> {
     public Barco(int tamañoBarco){
         posicionesX=new ArrayList<>();
         posicionesY=new ArrayList<>();
-        px=-1;
-        py=-1;
         this.tamaño=tamañoBarco;
         this.orientacion=0;
         for(int i=0; i<tamañoBarco;i++){

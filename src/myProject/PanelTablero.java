@@ -72,7 +72,7 @@ public class PanelTablero extends JPanel {
                 case 0: //no hay nada
                     labelSeleccionado.setBackground(Color.blue);
                     labelSeleccionado.setText("");
-                    labelSeleccionado.setIcon(new ImageIcon(getClass().getResource("/imagenes/fuego.png")));
+                    labelSeleccionado.setIcon(new ImageIcon(getClass().getResource("/imagenes/x.png")));
                     break;
 
                 case 2:
@@ -107,12 +107,6 @@ public class PanelTablero extends JPanel {
                     break;
             }
         }
-    }
-    public int identificarPosicionAcambiar(){
-        int posicionAcambiar=0;
-
-
-        return posicionAcambiar;
     }
 
     public void ocultarMapa() {

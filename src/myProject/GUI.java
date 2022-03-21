@@ -14,7 +14,7 @@ public class GUI extends JFrame {
     private Header headerProject;
     private ControlGame controlGame;
     private Escucha escucha;
-    private JButton empezar;
+    private JButton instrucciones;
     /**
      * Constructor of GUI class
      */
@@ -39,6 +39,7 @@ public class GUI extends JFrame {
         //Create Listener Object and Control Object
         //Set up JComponents
         headerProject = new Header("Header ...", Color.BLACK);
+        escucha=new Escucha();
         controlGame =new ControlGame();
         this.getContentPane().setLayout(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
@@ -50,22 +51,25 @@ public class GUI extends JFrame {
         panelJugador.setBackground(Color.black);
         panelJugador.add(controlGame.getPanelTableroJugador());
         this.add(panelJugador, constraints);
-
+/*
         JPanel panelOponente= new JPanel();
         panelOponente.setBackground(Color.PINK);
         constraints.gridx = 1;
         constraints.gridy = 0;
         constraints.gridwidth = 1;
         panelOponente.add(controlGame.getPanelTableroOponente());
-        this.add(panelOponente, constraints);
+        this.add(panelOponente, constraints);*/
 
-        empezar=new JButton("Empezar");
-        empezar.addActionListener(escucha);
-       // this.add(empezar);
+        instrucciones=new JButton("intrucciones");
+        instrucciones.addActionListener(escucha);
+        constraints.gridx = 0;
+        constraints.gridy = 2;
+        this.add(instrucciones,constraints);
 
        // PanelTablero jugador=new PanelTablero(new Tablero());
        // this.add(jugador);
     }
+
     /**
      * Main process of the Java program
      * @param args Object used in order to send input data from command line when
@@ -84,7 +88,11 @@ public class GUI extends JFrame {
     private class Escucha implements ActionListener {
 
         @Override
-        public void actionPerformed(ActionEvent actionEvent) {
+        public void actionPerformed(ActionEvent e) {
+            if(e.getSource()==instrucciones){
+                JOptionPane.showMessageDialog(null,"", "instrucciones",-1,new ImageIcon(getClass().getResource("/imagenes/instrucciones.png")));
+
+            }
 
         }
     }
