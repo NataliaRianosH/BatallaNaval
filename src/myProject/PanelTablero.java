@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * Esta clase es usada para hacer visible un tablero
+ * Esta clase es usada para hacer visible el tablero en el que jugará la maquina
  * @autor Natalia Riaños Horta (2042568) rianos.natalia@correounivalle.edu.co
  * Miguel Ángel Ospina Hernández (2040634) miguel.ospina.hernandez@correounivalle.edu.co
  * @version v.1.0.0 date: 1/03/2022
@@ -20,7 +20,8 @@ public class PanelTablero extends JPanel {
     private JLabel labelSeleccionado;
     private int px = 0, //posicion x del Label seleccionado
             py = 0, //posición y del label seleccionado
-            barcosEnElMapa = 0;// cantidad de barcos en el mapa
+            barcosEnElMapa = 0, // cantidad de barcos en el mapa
+            cantBarcosEncontrados=0;
     private Escucha escucha;
     private int estadoDelJuego = 0; //0 añadir barcos, 1 buscar barcos
     private Barco barcoSeleccionado;
@@ -63,11 +64,26 @@ public class PanelTablero extends JPanel {
         pintarMapa();
     }
 
-    public void jugadaOponente(){
-        //seleccionar un label Al azar
+    public void jugada(){
         Random aleatorio = new Random();
-        //  cara= aleatorio.nextInt(6)+1;
+        py= aleatorio.nextInt(10+0);
+        px=aleatorio.nextInt(10+0);
+        System.out.println(" JUGADA ALEATORIA " +py +px);
+        labelSeleccionado=mapaLabels.get(py).get(px);
 
+        if(labelSeleccionado.getIcon()!=null){
+            System.out.println("Tiene icono");
+            do{
+                py= aleatorio.nextInt(10+0);
+                px= aleatorio.nextInt(10+0);
+                labelSeleccionado=mapaLabels.get(py).get(px);
+            }while (labelSeleccionado.getIcon()!=null);
+
+        }else{
+            labelSeleccionado=mapaLabels.get(py).get(px);
+
+        }
+        pintarMapa();
     }
 
     /**
@@ -114,7 +130,7 @@ public class PanelTablero extends JPanel {
                     identificarBarco();
 
                     int posicionAcambiar=0; //identificar la posicion a cambiar
-                    System.out.println("px "+ px+ " py "+ py + ". El barco es: "+barcos.indexOf(barcoSeleccionado)  + barcoSeleccionado +" orientacion "+ barcoSeleccionado.getOrientacion()+ " con las posicions:  posiciones x="+  barcoSeleccionado.getPosicionesX()+" posiciones y="+  barcoSeleccionado.getPosicionesY());
+                //    System.out.println("px "+ px+ " py "+ py + ". El barco es: "+barcos.indexOf(barcoSeleccionado)  + barcoSeleccionado +" orientacion "+ barcoSeleccionado.getOrientacion()+ " con las posicions:  posiciones x="+  barcoSeleccionado.getPosicionesX()+" posiciones y="+  barcoSeleccionado.getPosicionesY());
                     switch (barcoSeleccionado.getOrientacion()){
                         case 0: //horizontal
                             posicionAcambiar=barcoSeleccionado.getPosicionesX().indexOf(px);
@@ -123,15 +139,20 @@ public class PanelTablero extends JPanel {
                             posicionAcambiar=barcoSeleccionado.getPosicionesY().indexOf(py);
                             break;
                     }
-                    System.out.println("SE VA A CAMBIAR "+ posicionAcambiar);
+                    //System.out.println("SE VA A CAMBIAR "+ posicionAcambiar);
 
                     barcoSeleccionado.set(posicionAcambiar, 3);
                     tableroJugador.add(3, px, py);
-                    System.out.println(barcoSeleccionado);
+                   // System.out.println(barcoSeleccionado);
                     if(barcoSeleccionado.barcoEncontrado()){
-                        System.out.println("Se van a pintar fuegos porque se encontró todo un barco");
+                        cantBarcosEncontrados++;
+                      //  System.out.println("Se van a pintar fuegos porque se encontró todo un barco");
                         for(int i=0; i<barcoSeleccionado.size();i++){
                             mapaLabels.get(barcoSeleccionado.getPosicionesY().get(i)).get(barcoSeleccionado.getPosicionesX().get(i)).setIcon(new ImageIcon(getClass().getResource("/imagenes/fuego.png")));
+                        }
+                        if(cantBarcosEncontrados==9){
+                            JOptionPane.showMessageDialog(null,"El oponente es el ganador");
+
                         }
                     }else {
                         labelSeleccionado.setIcon(new ImageIcon(getClass().getResource("/imagenes/bomba.png")));
@@ -235,8 +256,8 @@ public class PanelTablero extends JPanel {
         //  System.out.println("Se va aidentificar barco en "+ px + py);
 
         for(int i=0;i<barcos.size();i++){
-            System.out.println("x "+barcos.get(i).getPosicionesX());
-            System.out.println("y "+barcos.get(i).getPosicionesY());
+            //System.out.println("x "+barcos.get(i).getPosicionesX());
+          //  System.out.println("y "+barcos.get(i).getPosicionesY());
             //   System.out.println(barcos.get(i).getPosicionesX().indexOf(px) + " " +barcos.get(i).getPosicionesX().indexOf(py));
             if(barcos.get(i).getPosicionesX().indexOf(px)!=-1){ //está el x, ahora buscar el y
                 if(barcos.get(i).getPosicionesY().indexOf(py)!=-1){
@@ -282,9 +303,7 @@ public class PanelTablero extends JPanel {
         return barcoSeleccionado;
     }
 
-    public void JugadaOponente(){
 
-    }
 
     public int getEstadoDelJuego() {
         return estadoDelJuego;

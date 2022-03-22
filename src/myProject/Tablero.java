@@ -107,7 +107,7 @@ public class Tablero extends ArrayList <ArrayList<Integer>> {
                     }
             }
         }else {
-            System.out.println("no se puede pintó");
+        //    System.out.println("no se puede pintó");
         }
     }
     /**

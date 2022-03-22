@@ -35,7 +35,7 @@ public class Barco extends ArrayList <Integer> {
     }
     public boolean barcoEncontrado(){ //revisar el igual
         if(tamaño==1){
-            System.out.println("Hay solo 1");
+         //   System.out.println("Hay solo 1");
             return true;
         }
         for(int i=0; i<tamaño;i++){

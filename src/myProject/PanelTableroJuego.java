@@ -7,6 +7,13 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * Esta clase es usada para hacer visible el tablero en el que jugará el usuario
+ * @autor Natalia Riaños Horta (2042568) rianos.natalia@correounivalle.edu.co
+ * Miguel Ángel Ospina Hernández (2040634) miguel.ospina.hernandez@correounivalle.edu.co
+ * @version v.1.0.0 date: 21/03/2022
+ */
+
 public class PanelTableroJuego extends JPanel {
     private Tablero tablero;
     private Barco barcoSeleccionado;
@@ -15,11 +22,13 @@ public class PanelTableroJuego extends JPanel {
     private int px, py, cantBarcosEncontrados=0;
     private Escucha escucha;
     private ArrayList<Barco> barcos;
+    PanelTablero tableoOponente;
 
     /**
      * Constructor of PanelJugador class
      */
-    public PanelTableroJuego(PanelTablero tableoOponente){
+    public PanelTableroJuego(PanelTablero tableoDelOponente){
+        tableoOponente=tableoDelOponente;
         barcos = new ArrayList<Barco>();
         Barco portaavionJugador = new Barco(4);
         barcos.add(portaavionJugador);
@@ -43,7 +52,7 @@ public class PanelTableroJuego extends JPanel {
         escucha=new Escucha();
         tablero= new Tablero(); //tablero aleatorio
         tablero.generarTableroAleatorio(barcos);
-        System.out.println(tablero);
+      //  System.out.println(tablero);
         // this.removerEscucha();
         this.setPreferredSize(new Dimension(450, 450));
         mapaLabels = new ArrayList<ArrayList<JLabel>>();
@@ -111,8 +120,8 @@ public class PanelTableroJuego extends JPanel {
         //  System.out.println("Se va aidentificar barco en "+ px + py);
 
         for(int i=0;i<barcos.size();i++){
-            System.out.println("x "+barcos.get(i).getPosicionesX());
-            System.out.println("y "+barcos.get(i).getPosicionesY());
+            //System.out.println("x "+barcos.get(i).getPosicionesX());
+          //  System.out.println("y "+barcos.get(i).getPosicionesY());
             //   System.out.println(barcos.get(i).getPosicionesX().indexOf(px) + " " +barcos.get(i).getPosicionesX().indexOf(py));
             if(barcos.get(i).getPosicionesX().indexOf(px)!=-1){ //está el x, ahora buscar el y
                 if(barcos.get(i).getPosicionesY().indexOf(py)!=-1){
@@ -149,7 +158,7 @@ public class PanelTableroJuego extends JPanel {
                         posicionAcambiar=barcoSeleccionado.getPosicionesY().indexOf(py);
                         break;
                 }
-                System.out.println("SE VA A CAMBIAR "+ posicionAcambiar);
+                //System.out.println("SE VA A CAMBIAR "+ posicionAcambiar);
 
                 barcoSeleccionado.set(posicionAcambiar, 3);
                 tablero.add(3, px, py);
@@ -161,8 +170,8 @@ public class PanelTableroJuego extends JPanel {
                         mapaLabels.get(barcoSeleccionado.getPosicionesY().get(i)).get(barcoSeleccionado.getPosicionesX().get(i)).setIcon(new ImageIcon(getClass().getResource("/imagenes/fuego.png")));
                     }
                     if(cantBarcosEncontrados==9){
-                        JOptionPane.showMessageDialog(null,"Encontraste todos los barcos");
-
+                        JOptionPane.showMessageDialog(null,"Encontraste todos los barcos, \n eres el ganador ");
+                        removerEscucha();
                     }
 
                 }else {
@@ -170,6 +179,13 @@ public class PanelTableroJuego extends JPanel {
                 }
 
                 break;
+        }
+    }
+    public void removerEscucha(){
+        for(int fila=0; fila<mapaLabels.size();fila++){
+            for (int x=0; x<mapaLabels.get(fila).size();x++){
+                mapaLabels.get(fila).get(x).removeMouseListener(escucha);
+            }
         }
     }
 
@@ -225,6 +241,7 @@ public class PanelTableroJuego extends JPanel {
         public void mouseClicked(MouseEvent mouseEvent) {
             identificarSeleccion(mouseEvent);
             jugada();
+            tableoOponente.jugada();
         }
         @Override
         public void mousePressed(MouseEvent mouseEvent) {
